@@ -17,16 +17,17 @@ namespace IMDBData
         {
             foreach (Title title in titles)
             {
-                string SQL = "INSERT INTO [Titles]([TConst]," +
+                string SQL = "INSERT INTO [Titles]([TConst], [TitleType]" +
                     "[PrimaryTitle],[OriginalTitle],[IsAdult],[StartYear]," +
                     "[EndYear],[RuntimeMinutes]) " +
                     "VALUES('" + title.Tconst + "'" +
+                    ",'" + title.TitleType.Replace("'", "''") + "'" +
                     ",'" + title.PrimaryTitle.Replace("'", "''") + "'" +
                     ",'" + title.OriginalTitle.Replace("'", "''") + "'" +
                     ",'" + title.IsAdult + "'" +
-                    "," + CheckObjectForNull(title.StartYear) +
-                    "," + CheckObjectForNull(title.EndYear) +
-                    "," + CheckObjectForNull(title.RunTimeMinutes) + ")";
+                    "," + CheckIntForNull(title.StartYear) +
+                    "," + CheckIntForNull(title.EndYear) +
+                    "," + CheckIntForNull(title.RunTimeMinutes) + ")";
 
                 //throw new Exception(SQL);
 
@@ -35,13 +36,16 @@ namespace IMDBData
             }
         }
 
-        public object CheckObjectForNull(int? value)
+        public string CheckIntForNull(int? input)
         {
-            if (value == null)
+            if (input == null)
             {
                 return "NULL";
             }
-            return value.ToString();
+            else
+            {
+                return "" + input;
+            }
         }
     }
 }

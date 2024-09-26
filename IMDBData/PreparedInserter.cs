@@ -15,8 +15,9 @@ namespace IMDBData
 
         public void Insert(List<Title> titles, SqlConnection sqlConn, SqlTransaction sqlTransaction)
         {
-            string SqlQuery = "INSERT INTO [dbo].[Titles] ([Tconst],[PrimaryTitle],[OriginalTitle],[IsAdult],[StartYear],[EndYear],[RunTimeMinutes]) " +
+            string SqlQuery = "INSERT INTO [dbo].[Titles] ([Tconst], [TitleType], [PrimaryTitle],[OriginalTitle],[IsAdult],[StartYear],[EndYear],[RunTimeMinutes]) " +
                 "VALUES (@Tconst" +
+                "@TitleType" +
                 "@PrimaryTitle" +
                 "@OriginalTitle" +
                 "@IsAdult" +
@@ -29,6 +30,9 @@ namespace IMDBData
 
             SqlParameter tconstPar = sqlCommand.Parameters.Add("@Tconst", SqlDbType.VarChar, 50);
             sqlCommand.Parameters.Add("@Tconst", SqlDbType.VarChar, 50);
+
+            SqlParameter titleTypePar = sqlCommand.Parameters.Add("@TitleType", SqlDbType.VarChar, 50);
+            sqlCommand.Parameters.Add("@TitleType", SqlDbType.VarChar, 50);
 
             SqlParameter primaryTitlePar = sqlCommand.Parameters.Add("@PrimaryTitle", SqlDbType.VarChar, 200);
             sqlCommand.Parameters.Add("@PrimaryTitle", SqlDbType.VarChar, 200);
@@ -54,6 +58,7 @@ namespace IMDBData
             foreach (Title title in titles)
             {
                 tconstPar.Value = title.Tconst;
+                titleTypePar.Value = title.TitleType;
                 primaryTitlePar.Value = title.PrimaryTitle;
                 originalTitlePar.Value = title.OriginalTitle;
                 isAdultPar.Value = title.IsAdult;
@@ -65,6 +70,7 @@ namespace IMDBData
 
 
                 sqlCommand.Parameters.AddWithValue("@Tconst", title.Tconst);
+                sqlCommand.Parameters.AddWithValue("@TitleType", title.TitleType);
                 sqlCommand.Parameters.AddWithValue("@PrimaryTitle", title.PrimaryTitle);
                 sqlCommand.Parameters.AddWithValue("@OriginalTitle", title.OriginalTitle);
                 sqlCommand.Parameters.AddWithValue("@IsAdult", title.IsAdult);

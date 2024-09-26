@@ -21,6 +21,7 @@ namespace IMDBData
             DataTable titleTable = new DataTable();
 
             DataColumn tconstCol = new DataColumn("tconst", typeof(string));
+            DataColumn titleTypeCol = new DataColumn("TitleType", typeof(string));
             DataColumn primaryTitleCol = new DataColumn("PrimaryTitle", typeof(string));
             DataColumn originalTitleCol = new DataColumn("OriginalTitle", typeof(string));
             DataColumn isAdultCol = new DataColumn("IsAdult", typeof(bool));
@@ -29,6 +30,7 @@ namespace IMDBData
             DataColumn runTimeinMinutesCol = new DataColumn("RunTimeinMinutes", typeof(int));
 
             titleTable.Columns.Add(tconstCol);
+            titleTable.Columns.Add(titleTypeCol);
             titleTable.Columns.Add(primaryTitleCol);
             titleTable.Columns.Add(originalTitleCol);
             titleTable.Columns.Add(isAdultCol);
@@ -40,6 +42,7 @@ namespace IMDBData
             {
                 DataRow row = titleTable.NewRow();
                 FillParameter(row, "Tconst", title.Tconst);
+                FillParameter(row, "TitleType", title.TitleType);
                 FillParameter(row, "PrimaryTitle", title.PrimaryTitle);
                 FillParameter(row, "OriginalTitle", title.OriginalTitle);
                 FillParameter(row, "IsAdult", title.IsAdult);
