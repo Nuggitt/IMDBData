@@ -27,7 +27,7 @@ namespace IMDBData
             DataColumn isAdultCol = new DataColumn("IsAdult", typeof(bool));
             DataColumn startYearCol = new DataColumn("StartYear", typeof(int));
             DataColumn endYearCol = new DataColumn("EndYear", typeof(int));
-            DataColumn runTimeinMinutesCol = new DataColumn("RunTimeinMinutes", typeof(int));
+            DataColumn runTimeMinutesCol = new DataColumn("RunTimeMinutes", typeof(int));
 
             titleTable.Columns.Add(tconstCol);
             titleTable.Columns.Add(titleTypeCol);
@@ -36,7 +36,7 @@ namespace IMDBData
             titleTable.Columns.Add(isAdultCol);
             titleTable.Columns.Add(startYearCol);
             titleTable.Columns.Add(endYearCol);
-            titleTable.Columns.Add(runTimeinMinutesCol);
+            titleTable.Columns.Add(runTimeMinutesCol);
 
             foreach (Title title in titles)
             {

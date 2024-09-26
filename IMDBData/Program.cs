@@ -50,6 +50,7 @@ foreach (string line in File.ReadLines(filePath).Skip(1))
     Title newTitle = new Title()
     {
         Tconst = tconst,
+        TitleType = titleType,
         PrimaryTitle = primaryTitle,
         OriginalTitle = originalTitle,
         IsAdult = isAdult,
@@ -66,7 +67,7 @@ foreach (string line in File.ReadLines(filePath).Skip(1))
 Console.WriteLine("List of titles length: " + titles.Count);
 
 SqlConnection sqlConn = new SqlConnection("server=localhost;database=IMDB;" +
-    "user id=sa;password=2024forlife;TrustServerCertificate=True");
+    "user id=sa;password=Holger1208!;TrustServerCertificate=True");
 
 sqlConn.Open();
 SqlTransaction transAction = sqlConn.BeginTransaction();
@@ -76,8 +77,8 @@ DateTime before = DateTime.Now;
 try
 {
     inserter.Insert(titles, sqlConn, transAction);
-    //transAction.Commit();
-    transAction.Rollback();
+    transAction.Commit();
+    //transAction.Rollback();
 }
 catch (SqlException ex)
 {

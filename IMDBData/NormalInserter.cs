@@ -17,13 +17,13 @@ namespace IMDBData
         {
             foreach (Title title in titles)
             {
-                string SQL = "INSERT INTO [Titles]([TConst], [TitleType]" +
-                    "[PrimaryTitle],[OriginalTitle],[IsAdult],[StartYear]," +
+                string SQL = "INSERT INTO [Titles]([TConst]," +
+                    "[TitleType],[PrimaryTitle],[OriginalTitle],[IsAdult],[StartYear]," +
                     "[EndYear],[RuntimeMinutes]) " +
                     "VALUES('" + title.Tconst + "'" +
-                    ",'" + title.TitleType.Replace("'", "''") + "'" +
-                    ",'" + title.PrimaryTitle.Replace("'", "''") + "'" +
-                    ",'" + title.OriginalTitle.Replace("'", "''") + "'" +
+                    ",'" + (title.TitleType?.Replace("'", "''")) + "'" +
+                    ",'" + (title.PrimaryTitle?.Replace("'", "''")) + "'" +
+                    ",'" + (title.OriginalTitle?.Replace("'", "''")) + "'" +
                     ",'" + title.IsAdult + "'" +
                     "," + CheckIntForNull(title.StartYear) +
                     "," + CheckIntForNull(title.EndYear) +
