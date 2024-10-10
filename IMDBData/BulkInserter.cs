@@ -18,6 +18,7 @@ namespace IMDBData
 
         public void Insert(List<Title> titles, SqlConnection sqlConn, SqlTransaction sqlTransaction)
         {
+            // Inserting titles
             DataTable titleTable = new DataTable();
 
             DataColumn tconstCol = new DataColumn("tconst", typeof(string));
@@ -51,16 +52,52 @@ namespace IMDBData
                 FillParameter(row, "RunTimeMinutes", title.RunTimeMinutes);
                 titleTable.Rows.Add(row);
             }
+
             SqlBulkCopy bulkCopy = new SqlBulkCopy(sqlConn, SqlBulkCopyOptions.Default, sqlTransaction);
             bulkCopy.DestinationTableName = "dbo.Titles";
             bulkCopy.WriteToServer(titleTable);
 
+            //---------------------------------------------- GENRES ----------------------------------------------
 
+            DataTable genreTable = new DataTable();
+
+            DataColumn genreIDCol = new DataColumn("GenreID", typeof(int));
+            DataColumn genreCol = new DataColumn("Genre", typeof(string));
+
+            genreTable.Columns.Add(genreIDCol);
+            genreTable.Columns.Add(genreCol);
+
+            // HashSet to avoid duplicate genres
+            HashSet<string> uniqueGenres = new HashSet<string>();
+            int genreIDCounter = 1;
+
+            // Assuming Title.Genres is a comma-separated string of genres
+            foreach (Title title in titles)
+            {
+                if (!string.IsNullOrWhiteSpace(title.Genre))
+                {
+                    string[] genres = title.Genre.Split(',');
+
+                    foreach (string genre in genres.Select(g => g.Trim()).Distinct())
+                    {
+                        if (!uniqueGenres.Contains(genre))
+                        {
+                            DataRow row = genreTable.NewRow();
+                            row["GenreID"] = genreIDCounter++;
+                            row["Genre"] = genre;
+                            genreTable.Rows.Add(row);
+                            uniqueGenres.Add(genre);
+                        }
+                    }
+                }
+            }
+
+            SqlBulkCopy bulkCopyGenre = new SqlBulkCopy(sqlConn, SqlBulkCopyOptions.Default, sqlTransaction);
+            bulkCopyGenre.DestinationTableName = "dbo.Genres";
+            bulkCopyGenre.WriteToServer(genreTable);
         }
 
-        public void FillParameter(DataRow row,
-            string columnName,
-            object? value)
+        public void FillParameter(DataRow row, string columnName, object? value)
         {
             if (value != null)
             {

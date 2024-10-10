@@ -17,5 +17,8 @@ namespace IMDBData.Models
         public int? StartYear { get; set; }
         public int? EndYear { get; set; }
         public int? RunTimeMinutes { get; set; }
+        public int GenreID { get; set; }
+        public string Genre { get; set; }
+
     }
 }

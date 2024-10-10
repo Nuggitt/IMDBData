@@ -25,7 +25,7 @@ switch (input)
 int lineCount = 0;
 List<Title> titles = new List<Title>();
 string filePath = "C:/IMDBData/title.basics.tsv";
-foreach (string line in File.ReadLines(filePath).Skip(1))
+foreach (string line in File.ReadLines(filePath))
 {
     if (lineCount == 50000)
     {
@@ -46,6 +46,7 @@ foreach (string line in File.ReadLines(filePath).Skip(1))
     int? startYear = ParseInt(splitLine[5]);
     int? endYear = ParseInt(splitLine[6]);
     int? runtimeMinutes = ParseInt(splitLine[7]);
+    string genres = splitLine[8];
 
     Title newTitle = new Title()
     {
@@ -56,7 +57,8 @@ foreach (string line in File.ReadLines(filePath).Skip(1))
         IsAdult = isAdult,
         StartYear = startYear,
         EndYear = endYear,
-        RunTimeMinutes = runtimeMinutes
+        RunTimeMinutes = runtimeMinutes,
+        Genre = genres
     };
 
     titles.Add(newTitle);
