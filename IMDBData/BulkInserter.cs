@@ -100,26 +100,45 @@ namespace IMDBData
 
 
 
+            // Create the DataTable for TitleGenres
             DataTable titleGenreTable = new DataTable();
 
+            // Define the columns for the DataTable
             DataColumn titleGenreTconstCol = new DataColumn("Tconst", typeof(string));
             DataColumn titleGenreIDCol = new DataColumn("GenreID", typeof(int));
 
             titleGenreTable.Columns.Add(titleGenreTconstCol);
             titleGenreTable.Columns.Add(titleGenreIDCol);
 
-            foreach(Title title in titles)
+            // Iterate over the titles and populate the DataTable
+            foreach (Title title in titles)
             {
-                DataRow row = titleGenreTable.NewRow();
-                FillParameter(row, "Tconst", title.Tconst);
-                FillParameter(row, "GenreID", title.GenreID);
-                titleGenreTable.Rows.Add(row);
+                foreach (string genreName in title.Genre.Split(','))
+                {
+                    DataRow row = titleGenreTable.NewRow();
+
+                    // Use FillParameter method to fill in "Tconst"
+                    FillParameter(row, "Tconst", title.Tconst);
+
+                    // Use FillParameter method to fill in "GenreID"
+                    var genreID = genreTable.AsEnumerable()
+                                            .Where(r => r["Genre"].ToString() == genreName.Trim())
+                                            .Select(r => r["GenreID"])
+                                            .FirstOrDefault();
+
+                    FillParameter(row, "GenreID", genreID);
+
+                    titleGenreTable.Rows.Add(row);
+                }
+
 
             }
 
+            // Bulk insert into the SQL table
             SqlBulkCopy bulkCopyTitleGenre = new SqlBulkCopy(sqlConn, SqlBulkCopyOptions.Default, sqlTransaction);
-            bulkCopy.DestinationTableName = "dbo.TitleGenres";
-            bulkCopy.WriteToServer(titleTable);
+            bulkCopyTitleGenre.DestinationTableName = "dbo.TitleGenres";
+            bulkCopyTitleGenre.WriteToServer(titleGenreTable);
+
 
 
         }
