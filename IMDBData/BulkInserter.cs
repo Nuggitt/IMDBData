@@ -95,7 +95,35 @@ namespace IMDBData
             SqlBulkCopy bulkCopyGenre = new SqlBulkCopy(sqlConn, SqlBulkCopyOptions.Default, sqlTransaction);
             bulkCopyGenre.DestinationTableName = "dbo.Genres";
             bulkCopyGenre.WriteToServer(genreTable);
+
+            //---------------------------------------------- TITLEGENRES ----------------------------------------------
+
+
+
+            DataTable titleGenreTable = new DataTable();
+
+            DataColumn titleGenreTconstCol = new DataColumn("Tconst", typeof(string));
+            DataColumn titleGenreIDCol = new DataColumn("GenreID", typeof(int));
+
+            titleGenreTable.Columns.Add(titleGenreTconstCol);
+            titleGenreTable.Columns.Add(titleGenreIDCol);
+
+            foreach(Title title in titles)
+            {
+                DataRow row = titleGenreTable.NewRow();
+                FillParameter(row, "Tconst", title.Tconst);
+                FillParameter(row, "GenreID", title.GenreID);
+                titleGenreTable.Rows.Add(row);
+
+            }
+
+            SqlBulkCopy bulkCopyTitleGenre = new SqlBulkCopy(sqlConn, SqlBulkCopyOptions.Default, sqlTransaction);
+            bulkCopy.DestinationTableName = "dbo.TitleGenres";
+            bulkCopy.WriteToServer(titleTable);
+
+
         }
+
 
         public void FillParameter(DataRow row, string columnName, object? value)
         {

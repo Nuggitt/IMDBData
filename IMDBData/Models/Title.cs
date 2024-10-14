@@ -20,5 +20,6 @@ namespace IMDBData.Models
         public int GenreID { get; set; }
         public string Genre { get; set; }
 
+
     }
 }

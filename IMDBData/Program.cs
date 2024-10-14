@@ -25,7 +25,7 @@ switch (input)
 int lineCount = 0;
 List<Title> titles = new List<Title>();
 string filePath = "C:/IMDBData/title.basics.tsv";
-foreach (string line in File.ReadLines(filePath))
+foreach (string line in File.ReadLines(filePath).Skip(1))
 {
     if (lineCount == 50000)
     {
@@ -100,5 +100,14 @@ int? ParseInt(string value)
     {
         return null;
     }
-    return int.Parse(value);
+
+    if (int.TryParse(value, out int result))
+    {
+        return result;
+    }
+    else
+    {
+        // Handle the case where the value is not a valid integer
+        return null;
+    }
 }
