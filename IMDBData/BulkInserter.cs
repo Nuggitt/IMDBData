@@ -11,14 +11,11 @@ namespace IMDBData
 {
     public class BulkInserter : IInserter
     {
-        public object CheckObjectForNull(int? value)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public void Insert(List<Title> titles, SqlConnection sqlConn, SqlTransaction sqlTransaction)
         {
-            // Inserting titles
+            
             DataTable titleTable = new DataTable();
 
             DataColumn tconstCol = new DataColumn("tconst", typeof(string));
@@ -67,11 +64,11 @@ namespace IMDBData
             genreTable.Columns.Add(genreIDCol);
             genreTable.Columns.Add(genreCol);
 
-            // HashSet to avoid duplicate genres
+            
             HashSet<string> uniqueGenres = new HashSet<string>();
             int genreIDCounter = 1;
 
-            // Assuming Title.Genres is a comma-separated string of genres
+            
             foreach (Title title in titles)
             {
                 if (!string.IsNullOrWhiteSpace(title.Genre))
@@ -100,27 +97,27 @@ namespace IMDBData
 
 
 
-            // Create the DataTable for TitleGenres
+            
             DataTable titleGenreTable = new DataTable();
 
-            // Define the columns for the DataTable
+            
             DataColumn titleGenreTconstCol = new DataColumn("Tconst", typeof(string));
             DataColumn titleGenreIDCol = new DataColumn("GenreID", typeof(int));
 
             titleGenreTable.Columns.Add(titleGenreTconstCol);
             titleGenreTable.Columns.Add(titleGenreIDCol);
 
-            // Iterate over the titles and populate the DataTable
+            
             foreach (Title title in titles)
             {
                 foreach (string genreName in title.Genre.Split(','))
                 {
                     DataRow row = titleGenreTable.NewRow();
 
-                    // Use FillParameter method to fill in "Tconst"
+                    
                     FillParameter(row, "Tconst", title.Tconst);
 
-                    // Use FillParameter method to fill in "GenreID"
+                    
                     var genreID = genreTable.AsEnumerable()
                                             .Where(r => r["Genre"].ToString() == genreName.Trim())
                                             .Select(r => r["GenreID"])
@@ -134,7 +131,7 @@ namespace IMDBData
 
             }
 
-            // Bulk insert into the SQL table
+            
             SqlBulkCopy bulkCopyTitleGenre = new SqlBulkCopy(sqlConn, SqlBulkCopyOptions.Default, sqlTransaction);
             bulkCopyTitleGenre.DestinationTableName = "dbo.TitleGenres";
             bulkCopyTitleGenre.WriteToServer(titleGenreTable);

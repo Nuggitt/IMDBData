@@ -69,7 +69,7 @@ foreach (string line in File.ReadLines(filePath).Skip(1))
 Console.WriteLine("List of titles length: " + titles.Count);
 
 SqlConnection sqlConn = new SqlConnection("server=localhost;database=IMDB;" +
-    "user id=sa;password=Holger1208!;TrustServerCertificate=True");
+    "user id=sa;password=EnterPassWordHere!;TrustServerCertificate=True");
 
 sqlConn.Open();
 SqlTransaction transAction = sqlConn.BeginTransaction();

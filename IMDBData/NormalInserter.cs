@@ -29,7 +29,7 @@ namespace IMDBData
                     "," + CheckIntForNull(title.EndYear) +
                     "," + CheckIntForNull(title.RunTimeMinutes) + ")";
 
-                //throw new Exception(SQL);
+                
 
                 SqlCommand sqlComm = new SqlCommand(SQL, sqlConn, transAction);
                 sqlComm.ExecuteNonQuery();
